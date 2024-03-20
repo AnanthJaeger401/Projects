@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="LoginApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login/Register Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input, select, button {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #777;
+        }
+
+        .actions button {
+            margin-right: 5px;
+        }
+
+        .statistics {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body ng-controller="AuthController">
+    
+    <div ng-show="!loggedIn" style="text-align: center; padding: 50px;">
+        <h1>Welcome to Bonda Task Manager</h1>
+        <h2>Login</h2>
+        <form>
+            Username: <input type="text" ng-model="loginUsername" required><br>
+            Password: <input type="password" ng-model="loginPassword" required><br>
+            <button ng-click="login()" ng-disabled="loginButtonDisabled">Login</button>
+        </form>
+
+        <hr>
+
+        <h2>Register</h2>
+        <form>
+            New Username: <input type="text" ng-model="registerUsername" required><br>
+            New Password: <input type="password" ng-model="registerPassword" required><br>
+            <button ng-click="register()" ng-disabled="registerButtonDisabled">Register</button>
+        </form>
+    </div>
+    <div ng-show="loggedIn" style="padding: 20px;">
+        
+        <h2>Welcome, {{ loggedInUser }}!</h2>
+        <h3>To-Do List</h3>
+
+        <form ng-submit="addTask()">
+            <input type="text" ng-model="newTask" placeholder="Add a new task" required>
+            <select ng-model="newTaskPriority">
+                <option value="high">High</option>
+                <option value="low">Low</option>
+            </select>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="task in tasks">
+                    <td>
+                        <span ng-class="{'completed': task.completed}">
+                            <span ng-hide="task.editing">{{ task.text }}</span>
+                            <span ng-show="task.editing">
+                                <input type="text" ng-model="task.text" required>
+                            </span>
+                        </span>
+                    </td>
+                    <td>
+                        <span ng-class="{'completed': task.completed}">
+                            <span ng-hide="task.editing">{{ task.priority }}</span>
+                            <span ng-show="task.editing">
+                                <select ng-model="task.priority">
+                                    <option value="high">High</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </span>
+                        </span>
+                    </td>
+                    <td>
+                        <input type="checkbox" ng-model="task.completed" ng-change="updateTaskStatus(task)">
+                    </td>
+                    <td>
+                        <button ng-click="editTask(task)" ng-show="!task.editing">Edit</button>
+                        <button ng-click="saveEdit(task)" ng-show="task.editing">Save</button>
+                        <button ng-click="deleteTask(task)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button ng-click="logout()">Logout</button>
+
+        <div>
+            <strong>Task Statistics:</strong>
+            <p>Total Tasks: {{ taskStatistics.totalTasks }}</p>
+            <p>Completed Tasks: {{ taskStatistics.completedTasks }}</p>
+            <p>High Priority Tasks: {{ taskStatistics.highPriorityTasks }}</p>
+            <p>Low Priority Tasks: {{ taskStatistics.lowPriorityTasks }}</p>
+            <p>Completed High Priority Tasks: {{ taskStatistics.completedHighPriorityTasks }}</p>
+            <p>Completed Low Priority Tasks: {{ taskStatistics.completedLowPriorityTasks }}</p>
+        </div>
+
+    </div>
+    
+
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
+<script>
+
+    var LoginApp = angular.module("LoginApp", []);
+
+    LoginApp.controller("AuthController", function ($scope) {
+        $scope.loggedIn = false;
+        $scope.loggedInUser = "";
+        $scope.loginAttempts = 0;
+        $scope.maxLoginAttempts = 3;
+        $scope.loginButtonDisabled = false;
+        $scope.registerButtonDisabled = false;
+
+        $scope.users = JSON.parse(localStorage.getItem("users")) || {};
+
+        $scope.tasks = [];
+        $scope.newTask = "";
+        $scope.newTaskPriority = "low";
+
+        $scope.taskStatistics = {
+            totalTasks: 0,
+            completedTasks: 0,
+            highPriorityTasks: 0,
+            lowPriorityTasks: 0
+        };
+
+        $scope.loadTasks = function () {
+            $scope.tasks = JSON.parse(localStorage.getItem($scope.loggedInUser)) || [];
+        };
+
+        $scope.saveTasks = function () {
+            localStorage.setItem($scope.loggedInUser, JSON.stringify($scope.tasks));
+        };
+
+        $scope.login = function () {
+            if ($scope.users[$scope.loginUsername] === $scope.loginPassword) {
+                $scope.loggedIn = true;
+                $scope.loggedInUser = $scope.loginUsername;
+                $scope.loginAttempts = 0;
+                $scope.loadTasks();
+                $scope.updateTaskStatistics();  // Load tasks for the logged-in user
+                $scope.saveUserData();
+
+            } else {
+                $scope.loginAttempts++;
+                if ($scope.loginAttempts < $scope.maxLoginAttempts) {
+                    alert(`Invalid username or password. ${$scope.maxLoginAttempts - $scope.loginAttempts} attempts left.`);
+                } else {
+                    alert(`You've exceeded the maximum login attempts. Please try again later.`);
+                    $scope.loginButtonDisabled = true;
+                }
+            }
+        };
+
+        $scope.register = function () {
+            if (!$scope.users[$scope.registerUsername]) {
+                $scope.users[$scope.registerUsername] = $scope.registerPassword;
+                localStorage.setItem("users", JSON.stringify($scope.users));
+                alert("Registration successful!");
+            } else {
+                alert("Username already exists. Please choose another username.");
+            }
+        };
+
+        $scope.addTask = function () {
+            if ($scope.newTask.trim() !== "") {
+                $scope.tasks.push({ text: $scope.newTask, completed: false, priority: $scope.newTaskPriority });
+                $scope.updateTaskStatistics();
+                $scope.saveTasks();
+                $scope.newTask = "";
+                $scope.newTaskPriority = "low";
+            }
+        };
+
+        $scope.editTask = function (task) {
+            task.editing = true;
+            $scope.updateTaskStatistics();
+            $scope.saveTasks();
+        };
+
+        $scope.deleteTask = function (task) {
+            var cnf=confirm("Do you really want to delete this task?")
+            if(cnf)
+            {
+                var index = $scope.tasks.indexOf(task);
+                if (index !== -1) {
+                $scope.tasks.splice(index, 1);
+                $scope.updateTaskStatistics();
+                $scope.saveTasks();
+            }
+            }
+            
+        };
+
+        $scope.updateTaskStatus = function (task) {
+            $scope.updateTaskStatistics();
+            $scope.saveTasks();
+        };
+
+        $scope.saveEdit = function (task) {
+            task.editing = false;
+            $scope.updateTaskStatistics();
+            $scope.saveTasks();
+        };
+
+        $scope.updateTaskStatistics = function () {
+            $scope.taskStatistics.totalTasks = $scope.tasks.length;
+            $scope.taskStatistics.completedTasks = $scope.tasks.filter(task => task.completed).length;
+            $scope.taskStatistics.completedHighPriorityTasks = $scope.tasks.filter(task => task.completed && task.priority === 'high').length;
+            $scope.taskStatistics.completedLowPriorityTasks = $scope.tasks.filter(task => task.completed && task.priority === 'low').length;
+            $scope.taskStatistics.highPriorityTasks = $scope.tasks.filter(task => task.priority === 'high').length;
+            $scope.taskStatistics.lowPriorityTasks = $scope.tasks.filter(task => task.priority === 'low').length;
+        };
+
+        
+        $scope.logout = function () {
+            $scope.loggedIn = false;
+            $scope.loggedInUser = "";
+            $scope.loginUsername = "";
+            $scope.loginPassword = "";
+            $scope.tasks = [];
+        };
+    });
+</script>

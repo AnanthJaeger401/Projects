@@ -17,6 +17,7 @@ class Course(models.Model):
     description = models.TextField()
     credits = models.IntegerField()
 
+
     def __str__(self):
         return self.name
 
@@ -24,6 +25,15 @@ class Enrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     date_enrolled = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
         return f"{self.student} enrolled in {self.course}"
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+

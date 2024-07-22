@@ -1,5 +1,6 @@
 from django import forms
 from .models import Student
+from .models import Contact
 
 class StudentRegistrationForm(forms.ModelForm):
     class Meta:
@@ -9,3 +10,9 @@ class StudentRegistrationForm(forms.ModelForm):
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
             'address': forms.Textarea(attrs={'rows': 4}),
         }
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'message']

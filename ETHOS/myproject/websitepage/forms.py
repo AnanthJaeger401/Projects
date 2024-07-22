@@ -1,8 +1,9 @@
 from django import forms
 from .models import Student
 from .models import Contact
-
+from .models import Course
 class StudentRegistrationForm(forms.ModelForm):
+    course=forms.ModelChoiceField(queryset=Course.objects.all(), required=True)
     class Meta:
         model = Student
         fields = ['first_name', 'last_name', 'email', 'date_of_birth', 'address', 'phone_number']

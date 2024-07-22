@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import StudentRegistrationForm
+from .models import Course
 
 def homepage(request):
     return render(request, 'homepage.html')
@@ -17,6 +18,7 @@ def register(request):
 
 def register_success(request):
     return render(request, 'register_success.html')
+
 from django.contrib import messages
 from .forms import ContactForm
 
@@ -30,4 +32,10 @@ def contact_view(request):
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
+
+def courses_list(request):
+    c1 = Course.objects.all()
+    return render(request, 'courses.html', {'courses': c1})
+
+
 

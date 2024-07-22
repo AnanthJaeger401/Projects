@@ -5,8 +5,7 @@
 {% block content %}
     <div class="container" id="home">
         <h1>Welcome to Our Public Speaking Classes</h1>
-        <p>Our mission is to help you become a confident and effective public speaker. Whether you're a beginner or
-            looking to hone your skills, we have a course for you.</p>
+        <p style="text-align: center;">At ETHOS, our mission is to empower you to become a confident and compelling public speaker. Whether you're just starting out or seeking to refine your skills, we offer a range of courses tailored to meet your needs. Join us and transform your speaking abilities, elevate your confidence, and make a lasting impact with every presentation.</p>
     </div>
 
     <div class="container" id="about">
@@ -67,3 +66,27 @@
         </form>
     </div>
 {% endblock %}
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+</style>

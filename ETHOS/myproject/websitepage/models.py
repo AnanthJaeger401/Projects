@@ -1,8 +1,17 @@
 from django.db import models
-
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator, EmailValidator
 class Student(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30, validators=[
+            RegexValidator(
+                regex=r'^[a-zA-Z\s]*$',
+                message="Name should only contain letters and spaces."
+            )])
+    last_name = models.CharField(max_length=30, validators=[
+            RegexValidator(
+                regex=r'^[a-zA-Z\s]*$',
+                message="Name should only contain letters and spaces."
+            )])
     email = models.EmailField(unique=True)
     date_of_birth = models.DateField()
     address = models.TextField()

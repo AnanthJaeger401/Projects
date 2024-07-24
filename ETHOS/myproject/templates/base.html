@@ -92,6 +92,57 @@
         button:hover {
             background-color: #218838;
         }
+
+        .collapsible {
+            background-color: #f4f4f4;
+            color: #333;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .collapsible-content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f4f4f4;
+        }
+
+        .collapsible.active {
+            background-color: #ddd;
+        }
+        .teacher-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .teacher-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+        }
+
+        .teacher-item img {
+            border-radius: 50%;
+        }
+
+        .teacher-item h3 {
+            margin-top: 10px;
+        }
+
+        .teacher-item p {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -100,9 +151,8 @@
         <nav>
             <ul>
                 <li><a href="{% url 'homepage' %}">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="{% url 'courses'%}">Courses</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'courses_list'%}">Courses</a></li>
                 <li><a href="{% url 'register' %}">Register</a></li>
                 <li><a href="{% url 'contact' %}">Contact</a></li>
             </ul>
@@ -116,6 +166,8 @@
     <footer>
         <p>&copy; 2024 ETHOS. All rights reserved.</p>
     </footer>
+
+    {% block extra_js %}{% endblock %}
 
     <script>
         // Contact form submission

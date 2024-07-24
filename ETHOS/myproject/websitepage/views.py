@@ -37,5 +37,5 @@ def courses_list(request):
     c1 = Course.objects.all()
     return render(request, 'courses.html', {'courses': c1})
 
-
-
+def about(request):
+    return render(request, 'aboutus.html')

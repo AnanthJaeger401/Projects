@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Registration Successful{% endblock %}
+{% block title %}Registration Success{% endblock %}
 
 {% block content %}
-    <h2>Registration Successful</h2>
-    <p>Thank you for registering!</p>
+<div class="container">
+    <h2>Registration Successful!</h2>
+    <p>Thank you for registering. Your registration was successful, and we look forward to seeing you in our classes!
+    </p>
+    <a href="{% url 'homepage' %}" class="button-link">Return to Home</a>
+</div>
 {% endblock %}

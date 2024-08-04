@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ETHOS{% endblock %}</title>
+    <style>
+        /* General Body and Layout */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header img {
+            max-width: 150px;
+            height: auto;
+        }
+
+
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ecf0f1;
+        }
+
+        .container {
+            width: 85%;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        .course-list,
+        .testimonial-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .course,
+        .testimonial {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6em;
+            color: #555;
+            text-align: justify;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .collapsible {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .collapsible-content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f4f4f4;
+        }
+
+        .collapsible.active {
+            background-color: #2980b9;
+        }
+
+        .teacher-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .teacher-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 220px;
+        }
+
+        .teacher-item img {
+            border-radius: 50%;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .teacher-item h3 {
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .teacher-item p {
+            margin-top: 10px;
+            font-size: 1em;
+            color: #666;
+        }
+
+        .registration-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .registration-form h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2em;
+            color: #2c3e50;
+        }
+
+        .registration-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .registration-form input,
+        .registration-form textarea,
+        .registration-form select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+            /* Adjusting for padding and border */
+            box-sizing: border-box;
+        }
+
+        .registration-form textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .registration-form .submit-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .registration-form .submit-button:hover {
+            background-color: #2980b9;
+        }
+
+        .contact-container {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2em;
+            color: #2c3e50;
+        }
+
+        .contact-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+            /* Adjusting for padding and border */
+            box-sizing: border-box;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .contact-form .submit-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .contact-form .submit-button:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #2c3e50;
+            color: #fff;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <header
+        style="position: relative; background-color: #2c3e50; color: #fff; padding: 20px 0; text-align: center; overflow: hidden;">
+        <img src="{% static 'images/ethos.png' %}" alt="ETHOS Logo"
+            style="position: absolute; top: -15px; left: 20px; max-width: 150px; height: auto;">
+        <nav style="margin-top: 60px;">
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center;">
+                <li style="margin: 0 20px;"><a href="{% url 'homepage' %}"
+                        style="color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Home</a>
+                </li>
+                <li style="margin: 0 20px;"><a href="{% url 'about' %}"
+                        style="color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">About
+                        Us</a></li>
+                <li style="margin: 0 20px;"><a href="{% url 'courses_list' %}"
+                        style="color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Courses</a>
+                </li>
+                <li style="margin: 0 20px;"><a href="{% url 'register' %}"
+                        style="color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Register</a>
+                </li>
+                <li style="margin: 0 20px;"><a href="{% url 'contact' %}"
+                        style="color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Contact</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 20px 0; background-color: #2c3e50; color: #fff; margin-top: 40px;">
+        <p>&copy; 2024 ETHOS. All rights reserved.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

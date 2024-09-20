@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="LoginApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h2, h3 {
+            color: #4CAF50;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #777;
+        }
+
+        .actions button {
+            margin-right: 5px;
+            background-color: #f44336;
+        }
+
+        .actions button:hover {
+            background-color: #e53935;
+        }
+
+        .statistics {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .modal button {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body ng-controller="AuthController">
+    <div class="container">
+        <div ng-show="!loggedIn">
+            <h1>Bonda Task Manager</h1>
+            <h2>Login</h2>
+            <form ng-submit="login()">
+                <input type="text" ng-model="loginUsername" placeholder="Enter your username" required>
+                <input type="password" ng-model="loginPassword" placeholder="Enter your password" required>
+                <button type="submit">Login</button>
+            </form>
+
+            <hr>
+
+            <h2>Register</h2>
+            <form ng-submit="register()">
+                <input type="text" ng-model="registerUsername" placeholder="Choose a username" required>
+                <input type="password" ng-model="registerPassword" placeholder="Choose a password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <div ng-show="loggedIn">
+            <h2>Welcome, {{ loggedInUser }}!</h2>
+            <h3>Your To-Do List</h3>
+
+            <form ng-submit="addTask()">
+                <input type="text" ng-model="newTask" placeholder="Add a new task" required>
+                <select ng-model="newTaskPriority">
+                    <option value="high">High</option>
+                    <option value="low">Low</option>
+                </select>
+                <button type="submit">Add Task</button>
+            </form>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="task in tasks">
+                            <td>
+                                <span ng-class="{'completed': task.completed}">
+                                    <span ng-hide="task.editing">{{ task.text }}</span>
+                                    <span ng-show="task.editing">
+                                        <input type="text" ng-model="task.text" required>
+                                    </span>
+                                </span>
+                            </td>
+                            <td>
+                                <span ng-class="{'completed': task.completed}">
+                                    <span ng-hide="task.editing">{{ task.priority }}</span>
+                                    <span ng-show="task.editing">
+                                        <select ng-model="task.priority">
+                                            <option value="high">High</option>
+                                            <option value="low">Low</option>
+                                        </select>
+                                    </span>
+                                </span>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="task.completed" ng-change="updateTaskStatus(task)">
+                            </td>
+                            <td class="actions">
+                                <button ng-click="editTask(task)" ng-show="!task.editing">Edit</button>
+                                <button ng-click="saveEdit(task)" ng-show="task.editing">Save</button>
+                                <button ng-click="confirmDelete(task)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button ng-click="logout()">Logout</button>
+
+            <div class="statistics">
+                <h3>Task Statistics:</h3>
+                <p>Total Tasks: {{ taskStatistics.totalTasks }}</p>
+                <p>Completed Tasks: {{ taskStatistics.completedTasks }}</p>
+                <p>High Priority Tasks: {{ taskStatistics.highPriorityTasks }}</p>
+                <p>Low Priority Tasks: {{ taskStatistics.lowPriorityTasks }}</p>
+                <p>Completed High Priority Tasks: {{ taskStatistics.completedHighPriorityTasks }}</p>
+                <p>Completed Low Priority Tasks: {{ taskStatistics.completedLowPriorityTasks }}</p>
+            </div>
+        </div>
+
+        <!-- Modal for confirming deletion -->
+        <div class="modal" id="deleteModal">
+            <div class="modal-content">
+                <p>Are you sure you want to delete this task?</p>
+                <button id="confirmDeleteBtn">Yes</button>
+                <button id="cancelDeleteBtn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ensure AngularJS is properly loaded -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script>
+        var LoginApp = angular.module("LoginApp", []);
+
+        LoginApp.controller("AuthController", function ($scope) {
+            $scope.loggedIn = false;
+            $scope.tasks = [];
+            $scope.loggedInUser = '';
+            $scope.taskStatistics = {};
+
+            // Login function
+            $scope.login = function () {
+                if ($scope.loginUsername && $scope.loginPassword) {
+                    $scope.loggedIn = true;
+                    $scope.loggedInUser = $scope.loginUsername;
+                }
+            };
+
+            // Register function
+            $scope.register = function () {
+                alert('User registered! You can now log in.');
+            };
+
+            // Add a task
+            $scope.addTask = function () {
+                if ($scope.newTask) {
+                    $scope.tasks.push({
+                        text: $scope.newTask,
+                        priority: $scope.newTaskPriority || 'low',
+                        completed: false,
+                        editing: false
+                    });
+                    $scope.newTask = '';
+                    $scope.newTaskPriority = 'low';
+                }
+            };
+
+            // Edit task
+            $scope.editTask = function (task) {
+                task.editing = true;
+            };
+
+            // Save task
+            $scope.saveEdit = function (task) {
+                task.editing = false;
+            };
+
+            // Update task status
+            $scope.updateTaskStatus = function () {
+                $scope.updateStatistics();
+            };
+
+            // Update statistics
+            $scope.updateStatistics = function () {
+                var stats = {
+                    totalTasks: 0,
+                    completedTasks: 0,
+                    highPriorityTasks: 0,
+                    lowPriorityTasks: 0,
+                    completedHighPriorityTasks: 0,
+                    completedLowPriorityTasks: 0
+                };
+
+                $scope.tasks.forEach(function (task) {
+                    stats.totalTasks++;
+                    if (task.completed) stats.completedTasks++;
+                    if (task.priority === 'high') {
+                        stats.highPriorityTasks++;
+                        if (task.completed) stats.completedHighPriorityTasks++;
+                    } else {
+                        stats.lowPriorityTasks++;
+                        if (task.completed) stats.completedLowPriorityTasks++;
+                    }
+                });
+
+                $scope.taskStatistics = stats;
+            };
+
+            // Confirm delete
+            $scope.confirmDelete = function (task) {
+                // Modal logic
+                var modal = document.getElementById('deleteModal');
+                var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+                var cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+                modal.style.display = 'flex';
+
+                confirmDeleteBtn.onclick = function () {
+                    $scope.$apply(function () {
+                        var index = $scope.tasks.indexOf(task);
+                        $scope.tasks.splice(index, 1);
+                        $scope.updateStatistics();
+                    });
+                    modal.style.display = 'none';
+                };
+
+                cancelDeleteBtn.onclick = function () {
+                    modal.style.display = 'none';
+                };
+            };
+
+            // Logout
+            $scope.logout = function () {
+                $scope.loggedIn = false;
+                $scope.loggedInUser = '';
+                $scope.tasks = [];
+            };
+        });
+    </script>
+</body>
+
+</html>

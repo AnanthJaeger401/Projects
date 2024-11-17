@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<form method="post">
+    {% csrf_token %}
+    {{ resume_form.as_p }}
+
+    <h3>Work Experience</h3>
+    <div id="workexperience_formset" data-formset-prefix="workexperience">
+        {{ work_experience_formset.management_form }}
+        <div class="formset-container">
+            {% for form in work_experience_formset %}
+                <div class="form-instance">
+                    {{ form.as_p }}
+                    {% if not forloop.first %}
+                        <button type="button" class="remove-form" onclick="removeForm(this)">Remove</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <input type="checkbox" id="fresherCheckbox" onclick="toggleWorkExperience()"> I am a fresher<br>
+    <button type="button" onclick="addForm('workexperience_formset')">Add Another Work Experience</button>
+
+    <h3>Education</h3>
+    <div id="education_formset" data-formset-prefix="education">
+        {{ education_formset.management_form }}
+        <div class="formset-container">
+            {% for form in education_formset %}
+                <div class="form-instance">
+                    {{ form.as_p }}
+                    {% if not forloop.first %}
+                        <button type="button" class="remove-form" onclick="removeForm(this)">Remove</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="button" onclick="addForm('education_formset')">Add Another Education</button>
+
+    <h3>Skills</h3>
+    <div id="skill_formset" data-formset-prefix="skill">
+        {{ skill_formset.management_form }}
+        <div class="formset-container">
+            {% for form in skill_formset %}
+                <div class="form-instance">
+                    {{ form.as_p }}
+                    {% if not forloop.first %}
+                        <button type="button" class="remove-form" onclick="removeForm(this)">Remove</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="button" onclick="addForm('skill_formset')">Add Another Skill</button>
+
+    <h3>Languages</h3>
+    <div id="language_formset" data-formset-prefix="language">
+        {{ language_formset.management_form }}
+        <div class="formset-container">
+            {% for form in language_formset %}
+                <div class="form-instance">
+                    {{ form.as_p }}
+                    {% if not forloop.first %}
+                        <button type="button" class="remove-form" onclick="removeForm(this)">Remove</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="button" onclick="addForm('language_formset')">Add Another Language</button>
+
+    <h3>Projects</h3>
+    <div id="project_formset" data-formset-prefix="project">
+        {{ project_formset.management_form }}
+        <div class="formset-container">
+            {% for form in project_formset %}
+                <div class="form-instance">
+                    {{ form.as_p }}
+                    {% if not forloop.first %}
+                        <button type="button" class="remove-form" onclick="removeForm(this)">Remove</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="button" onclick="addForm('project_formset')">Add Another Project</button>
+
+    <h3>Achievements</h3>
+    <div id="achievement_formset" data-formset-prefix="achievement">
+        {{ achievement_formset.management_form }}
+        <div class="formset-container">
+            {% for form in achievement_formset %}
+                <div class="form-instance">
+                    {{ form.as_p }}
+                    {% if not forloop.first %}
+                        <button type="button" class="remove-form" onclick="removeForm(this)">Remove</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="button" onclick="addForm('achievement_formset')">Add Another Achievement</button><br>
+
+    <button type="submit">Submit</button>
+</form>
+</html>
+<script>
+function addForm(formsetId) {
+    const formContainer = document.getElementById(formsetId);
+    if (!formContainer) {
+        console.error(`Formset container with id '${formsetId}' not found.`);
+        return;
+    }
+
+    const formsetPrefix = formContainer.getAttribute('data-formset-prefix');
+    const formsetContainer = formContainer.querySelector('.formset-container');
+    const managementForm = formContainer.querySelector(`input[name="${formsetPrefix}-TOTAL_FORMS"]`);
+    
+    if (!managementForm) {
+        console.error(`Management form for formset '${formsetPrefix}' not found.`);
+        return;
+    }
+
+    const currentFormCount = parseInt(managementForm.value);
+    const lastForm = formsetContainer.querySelector('.form-instance:last-child');
+
+    if (!lastForm) {
+        console.error('No existing form to clone.');
+        return;
+    }
+
+    const newForm = lastForm.cloneNode(true); // Clone the last form
+    const formInputs = newForm.querySelectorAll('input, select, textarea, label');
+
+    formInputs.forEach(input => {
+        // Update the name, id, and htmlFor attributes with the new index
+        if (input.name) {
+            input.name = input.name.replace(`${formsetPrefix}-${currentFormCount - 1}`, `${formsetPrefix}-${currentFormCount}`);
+        }
+        if (input.id) {
+            input.id = input.id.replace(`${formsetPrefix}-${currentFormCount - 1}`, `${formsetPrefix}-${currentFormCount}`);
+        }
+        if (input.htmlFor) {
+            input.htmlFor = input.htmlFor.replace(`${formsetPrefix}-${currentFormCount - 1}`, `${formsetPrefix}-${currentFormCount}`);
+        }
+        if (input.type !== 'button' && input.type !== 'submit') {
+            input.value = '';  // Clear the input values for the new form
+        }
+    });
+
+    // Ensure the remove button is set up for the new form
+    let removeButton = newForm.querySelector('.remove-form');
+
+    if (removeButton)  {
+        removeButton.remove();
+    }
+
+    removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.classList.add('remove-form');
+    removeButton.innerText = 'Remove';
+    removeButton.onclick = function() { removeForm(removeButton); };
+    newForm.appendChild(removeButton);
+
+
+    formsetContainer.appendChild(newForm); // Add the new form to the container
+    managementForm.value = currentFormCount + 1; // Increment the TOTAL_FORMS count
+}
+
+function removeForm(button) {
+    console.log("the button" + button);
+    const formInstance = button.closest('.form-instance');
+    console.log("form instance", formInstance);
+    if (!formInstance) {
+        console.error('Form instance not found.');
+        return;
+    }
+
+    const formsetContainer = formInstance.closest('[data-formset-prefix]');
+    const formsetPrefix = formsetContainer.getAttribute('data-formset-prefix');
+    const totalForms = formsetContainer.querySelector(`input[name="${formsetPrefix}-TOTAL_FORMS"]`);
+    
+    if (!totalForms) {
+        console.error('TOTAL_FORMS not found.');
+        return;
+    }
+
+    // Remove the form from the DOM
+    formInstance.remove();
+    totalForms.value = parseInt(totalForms.value) - 1; // Decrease the TOTAL_FORMS count
+
+    // Reindex the remaining forms
+    const remainingForms = formsetContainer.querySelectorAll('.form-instance');
+    remainingForms.forEach((form, index) => {
+        const formInputs = form.querySelectorAll('input, select, textarea, label');
+        formInputs.forEach(input => {
+            if (input.name) {
+                input.name = input.name.replace(`${formsetPrefix}-${index + 1}`, `${formsetPrefix}-${index}`);
+            }
+            if (input.id) {
+                input.id = input.id.replace(`${formsetPrefix}-${index + 1}`, `${formsetPrefix}-${index}`);
+            }
+            if (input.htmlFor) {
+                input.htmlFor = input.htmlFor.replace(`${formsetPrefix}-${index + 1}`, `${formsetPrefix}-${index}`);
+            }
+        });
+    });
+}
+
+
+function toggleWorkExperience(formsetPrefix) {
+    const fresherCheckbox = document.getElementById('fresherCheckbox');
+    const workexp = document.getElementById('workexperience_formset');
+
+    // Check if elements exist
+    if (!fresherCheckbox || !workexp) {
+        console.error("Required elements 'fresherCheckbox' or 'workexperience_formset' not found.");
+        return;
+    }
+
+    const isFresher = fresherCheckbox.checked;
+
+    if (isFresher) {
+        workexp.style.opacity = "0.5"; // Make the element semi-transparent
+        workexp.style.pointerEvents = "none"; // Disable interaction
+        workexp.querySelectorAll(`[name^="${formsetPrefix}-"]`).forEach(input => {
+            // Only disable inputs that are not TOTAL_FORMS or INITIAL_FORMS
+            if (!input.name.endsWith('TOTAL_FORMS') && !input.name.endsWith('INITIAL_FORMS')) {
+                input.disabled = true;
+                input.value = ""; // Clear the input fields
+            }
+        });
+    } else {
+        workexp.style.opacity = "1"; // Make the element fully visible
+        workexp.style.pointerEvents = "auto"; // Enable interaction
+        workexp.querySelectorAll(`[name^="${formsetPrefix}-"]`).forEach(input => {
+            // Only enable inputs that are not TOTAL_FORMS or INITIAL_FORMS
+            if (!input.name.endsWith('TOTAL_FORMS') && !input.name.endsWith('INITIAL_FORMS')) {
+                input.disabled = false;
+            }
+        });
+    }
+}
+
+</script>
+<style>
+    :root {
+        --primary-color: #2563eb;
+        --primary-hover: #1d4ed8;
+        --danger-color: #dc2626;
+        --danger-hover: #b91c1c;
+        --success-color: #16a34a;
+        --success-hover: #15803d;
+        --border-color: #e5e7eb;
+        --background-light: #f9fafb;
+        --text-primary: #111827;
+        --text-secondary: #4b5563;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.5;
+        color: var(--text-primary);
+        background-color: #f3f4f6;
+        margin: 0;
+        padding: 2rem;
+    }
+
+    form {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    h3 {
+        color: var(--text-primary);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .form-instance {
+        background: var(--background-light);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-instance:hover {
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        transform: translateY(-2px);
+    }
+
+    label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        transition: all 0.2s;
+        box-sizing: border-box;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin: 1rem 0;
+        gap: 0.5rem;
+    }
+
+    #fresherCheckbox {
+        width: auto;
+        margin: 0;
+    }
+
+    .button-container {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    button[type="button"] {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    button[type="button"]:hover {
+        background-color: var(--primary-hover);
+    }
+
+    .remove-form {
+        background-color: var(--danger-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .remove-form:hover {
+        background-color: var(--danger-hover);
+    }
+
+    button[type="submit"] {
+        background-color: var(--success-color);
+        color: white;
+        padding: 1rem 2rem;
+        font-size: 1.125rem;
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    button[type="submit"]:hover {
+        background-color: var(--success-hover);
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .formset-container {
+        position: relative;
+    }
+
+    #workexperience_formset[style*="opacity: 0.5"] {
+        position: relative;
+    }
+
+    #workexperience_formset[style*="opacity: 0.5"]::after {
+        content: "Work experience disabled for freshers";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 1rem;
+        }
+
+        form {
+            padding: 1rem;
+        }
+
+        .button-container {
+            flex-direction: column;
+        }
+
+        button {
+            width: 100%;
+        }
+    }
+</style>

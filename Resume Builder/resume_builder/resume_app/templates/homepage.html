@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Builder</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script> <!-- Google Platform Script -->
+</head>
+<body>
+    {% load socialaccount %}
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">Resume<span>Builder</span></div>
+            <nav>
+                <ul class="nav-links">
+                    <!-- <li><a href="{% url 'resume:homepage' %}">Home</a></li> -->
+                    <li><a href="{% url 'resume:select_template_page' %}">Create Resume</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'resume:user_dashboard' %}">{{user.username}}</a></li>
+                        <li><a href="logout">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% provider_login_url 'google' %}?next=/" id="google-login-btn" class="g-signin2" data-onsuccess="onSignIn">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Build Your Perfect Resume in Minutes</h1>
+            <p>Create professional, ATS-friendly resumes with AI guidance and live preview features.</p>
+            <a href="{% url 'resume:select_template_page' %}" class="btn">Get Started</a>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Features</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h3>AI Guidance</h3>
+                    <p>Get suggestions and recommendations to craft the perfect resume.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Live Preview</h3>
+                    <p>See how your resume looks in real time while you edit.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Customizable Templates</h3>
+                    <p>Choose from a variety of templates that suit your profession.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Easy to Use</h3>
+                    <p>Intuitive interface to help you create resumes effortlessly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>1. Sign Up</h3>
+                    <p>Create an account to get started.</p>
+                </div>
+                <div class="step">
+                    <h3>2. Fill Your Details</h3>
+                    <p>Input your personal, educational, and work details.</p>
+                </div>
+                <div class="step">
+                    <h3>3. Choose a Template</h3>
+                    <p>Pick a design that suits your needs.</p>
+                </div>
+                <div class="step">
+                    <h3>4. Download</h3>
+                    <p>Export your resume in multiple formats.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container">
+            <p>&copy; 2024 ResumeBuilder App. All Rights Reserved.</p>
+            <ul class="social-links">
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">LinkedIn</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // Function that will handle the sign-in callback
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+
+            // Send the id_token to the backend for authentication
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/auth/social/login/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                console.log('Signed in as: ' + xhr.responseText);
+                // You can redirect the user or update the UI on successful login
+                window.location.href = '/resume/homepage/';
+            };
+            xhr.send(JSON.stringify({
+                'id_token': id_token
+            }));
+        }
+    </script>
+</body>
+</html>
+<style>
+    /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+}
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.navbar .logo span {
+    color: #ff6b6b;
+}
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+}
+.navbar .nav-links li {
+    margin-left: 1rem;
+}
+.navbar .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.navbar .btn {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #fff;
+    background: #ff6b6b;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+.navbar .btn:hover {
+    background: #ff4c4c;
+}
+
+/* Hero Section */
+.hero {
+    background: #f4f4f4;
+    text-align: center;
+    padding: 2rem 0;
+}
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+.hero p {
+    margin-bottom: 2rem;
+}
+.hero .btn {
+    padding: 0.7rem 2rem;
+}
+
+/* Features Section */
+.features {
+    padding: 2rem 0;
+    background: #fff;
+    text-align: center;
+}
+.features h2 {
+    margin-bottom: 1.5rem;
+}
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+.feature-item {
+    background: #f4f4f4;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+/* How It Works Section */
+.how-it-works {
+    background: #ff6b6b;
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+}
+.how-it-works h2 {
+    margin-bottom: 1.5rem;
+}
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+.step {
+    background: #ff4c4c;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+/* Footer */
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+.footer .social-links {
+    list-style: none;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+.footer .social-links li {
+    margin: 0 0.5rem;
+}
+.footer .social-links a {
+    color: #fff;
+    text-decoration: none;
+}
+
+</style>

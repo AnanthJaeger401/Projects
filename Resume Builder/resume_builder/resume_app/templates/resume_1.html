@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generated Resume</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      background-color: #f4f7fc;
+      color: #333;
+      padding: 0 15px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .name {
+      font-weight: 600;
+      color: #2e6ad6;
+    }
+
+    .contact-info p {
+      font-size: 16px;
+      color: #777;
+    }
+
+    .contact-info .separator {
+      margin: 0 15px;
+      color: #bbb;
+    }
+
+    .section-title {
+      font-size: 22px;
+      color: #2e6ad6;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .section-content {
+      margin-bottom: 30px;
+    }
+
+    .entry {
+      margin-bottom: 15px;
+    }
+
+    .position {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .date {
+      color: #777;
+    }
+
+    .skills-list,
+    .languages-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .skills-list li,
+    .languages-list li {
+      margin-bottom: 8px;
+    }
+
+    .skills__item strong {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header" contenteditable="true">
+      <h1><span class="name">{{ name }}</span></h1>
+      <div class="contact-info">
+        <p>Email: {{ email }} <span class="separator">|</span> Phone: {{ phone }}</p>
+      </div>
+    </div>
+
+    <!-- Professional Summary Section -->
+    <div class="section-content" contenteditable="true">
+      <h2 class="section-title">Professional Summary</h2>
+      <p>{{ summary }}</p>
+    </div>
+
+    <!-- Work Experience Section -->
+    {% if work_experiences %}
+      <div class="section-content" contenteditable="true">
+        <h2 class="section-title">Work Experience</h2>
+        {% for work in work_experiences %}
+          <div class="entry">
+            <h3 class="position">{{ work.job_title }} - {{ work.company }}</h3>
+            <p class="date">{{ work.start_date }} - {{ work.end_date|default:"Present" }}</p>
+            <p>{{ work.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Education Section -->
+    {% if educations %}
+      <div class="section-content" contenteditable="true">
+        <h2 class="section-title">Education</h2>
+        {% for education in educations %}
+          <div class="entry">
+            <h3>{{ education.degree }} - {{ education.institute }}</h3>
+            <p class="date">{{ education.start_date }} - {{ education.end_date|default:"Present" }}</p>
+            <p>GPA: {{ education.gpa }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Skills Section -->
+    {% if skills %}
+      <div class="section-content" contenteditable="true">
+        <h2 class="section-title">Skills</h2>
+        <ul class="skills-list">
+          {% for skill in skills %}
+            <li><strong>{{ skill.name }}:</strong> {{ skill.proficiency }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Languages Section -->
+    {% if languages %}
+      <div class="section-content" contenteditable="true">
+        <h2 class="section-title">Languages</h2>
+        <ul class="languages-list">
+          {% for language in languages %}
+            <li><strong>{{ language.name }}:</strong> {{ language.proficiency }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Projects Section -->
+    {% if projects %}
+      <div class="section-content" contenteditable="true">
+        <h2 class="section-title">Projects</h2>
+        {% for project in projects %}
+          <div class="entry">
+            <h3>{{ project.name }}</h3>
+            <p>{{ project.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Achievements Section -->
+    {% if achievements %}
+      <div class="section-content" contenteditable="true">
+        <h2 class="section-title">Achievements</h2>
+        {% for achievement in achievements %}
+          <div class="entry">
+            <h3>{{ achievement.title }}</h3>
+            <p>{{ achievement.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  <h2>Download Your Resume</h2>
+    <a href="?download=pdf">Download as PDF</a> | 
+</body>
+</html>

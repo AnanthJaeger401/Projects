@@ -1,0 +1,58 @@
+/* General Styles for Form Pages */
+.entrance-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.entrance-form h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.entrance-form p {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.entrance-form a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.entrance-form a:hover {
+    text-decoration: underline;
+}
+
+.entrance-form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.entrance-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Additional Styles */
+.form-fields {
+    margin-bottom: 20px;
+}
+
+hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}

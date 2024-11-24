@@ -1,132 +1,240 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Generated Resume</title>
-        <style>
-            /* Global Styles */
-            body {
-                font-family: Arial, sans-serif;
-                color: #333;
-                background-color: #f5f5f5;
-                margin: 0;
-                padding: 0;
-            }
-            .container {
-                max-width: 800px;
-                margin: 40px auto;
-                padding: 20px;
-                background-color: #fff;
-                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-                border-radius: 8px;
-            }
-            h1, h2, h3 {
-                color: #0044cc;
-                font-weight: bold;
-                margin-bottom: 8px;
-            }
-            h1 {
-                font-size: 2em;
-                text-align: center;
-                margin-bottom: 10px;
-            }
-            h2 {
-                font-size: 1.5em;
-                border-bottom: 2px solid #0044cc;
-                padding-bottom: 4px;
-                margin-top: 24px;
-            }
-            h3 {
-                font-size: 1.2em;
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Resume</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #2c3e50;
+        }
 
-            /* Section and Entry Styles */
-            .section {
-                margin-bottom: 24px;
-            }
-            .entry {
-                margin-bottom: 16px;
-                padding: 12px;
-                background-color: #fafafa;
-                border-left: 4px solid #0044cc;
-                border-radius: 4px;
-            }
-            ul {
-                list-style-type: disc;
-                padding-left: 20px;
-            }
-            li {
-                margin: 4px 0;
-            }
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
 
-            /* Contact Info */
-            .contact-info {
-                display: flex;
-                justify-content: center;
+        /* Header Section */
+        .header {
+            background-color: #2980b9;
+            color: #fff;
+            padding: 40px 0;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        /* Left Column (Contact, Skills, Achievements) */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Contact Info */
+        .contact-info {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-info h2 {
+            font-size: 1.5em;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+
+        .contact-info p {
+            font-size: 1.1em;
+            color: #34495e;
+        }
+
+        /* Skills Section */
+        .skills {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .skills h2 {
+            font-size: 1.5em;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+
+        .skills ul {
+            padding-left: 20px;
+        }
+
+        .skills li {
+            font-size: 1em;
+            color: #34495e;
+        }
+
+        /* Achievements Section */
+        .achievements {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .achievements h2 {
+            font-size: 1.5em;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+
+        .achievements ul {
+            padding-left: 20px;
+        }
+
+        .achievements li {
+            font-size: 1em;
+            color: #34495e;
+        }
+
+        /* Right Column (Summary, Experience, Education, Projects) */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.5em;
+            color: #2980b9;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 8px;
+        }
+
+        /* Entry (Experience, Education, Projects) */
+        .entry {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-left: 4px solid #2980b9;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .entry h3 {
+            font-size: 1.2em;
+            color: #34495e;
+        }
+
+        .entry p {
+            font-size: 1em;
+            color: #7f8c8d;
+        }
+
+        .entry .sub-details {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        /* Download Section */
+        .download {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .download a {
+            padding: 12px 20px;
+            background-color: #2980b9;
+            color: #fff;
+            font-size: 1.1em;
+            text-decoration: none;
+            border-radius: 6px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease;
+        }
+
+        .download a:hover {
+            background-color: #1c6e8c;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
                 gap: 20px;
-                font-size: 0.9em;
-                color: #555;
-                margin-bottom: 20px;
-            }
-            .contact-info p {
-                margin: 0;
             }
 
-            /* Professional Summary */
-            .summary {
-                font-size: 1.1em;
-                line-height: 1.6;
+            .header h1 {
+                font-size: 2.2em;
             }
-        </style>
-    </head>
-    <body>
 
-    <div class="container">
-        <!-- Header Section -->
+            .contact-info, .skills, .achievements, .entry {
+                padding: 15px;
+            }
+
+            .download a {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header Section -->
+    <div class="header" contenteditable="true">
         <h1>{{ name }}</h1>
-        <div class="contact-info">
-            <p>Email: {{ email }}</p>
-            <p>Phone: {{ phone }}</p>
-        </div>
+        <p>{{ title }}</p>
+    </div>
 
-        <!-- Objective Section -->
-        <div class="section">
-            <h2>Professional Summary</h2>
-            <p class="summary">{{ summary }}</p>
-        </div>
+    <!-- Main Content Section with Two Columns -->
+    <div class="main-content">
 
-        <!-- Work Experience Section -->
-        {% if work_experiences %}
-            <div class="section">
-                <h2>Work Experience</h2>
-                {% for work in work_experiences %}
-                    <div class="entry">
-                        <h3>{{ work.job_title }} - {{ work.company }}</h3>
-                        <p>{{ work.start_date }} - {{ work.end_date|default:"Present" }}</p>
-                        <p>{{ work.description }}</p>
-                    </div>
-                {% endfor %}
+        <!-- Left Column -->
+        <div class="left-column">
+
+            <!-- Contact Info Section -->
+            <div class="contact-info" contenteditable="true">
+                <h2>Contact Info</h2>
+                <p>Email: {{ email }}</p>
+                <p>Phone: {{ phone }}</p>
+                <p>Location: {{ location }}</p>
             </div>
-        {% endif %}
 
-        <!-- Education Section -->
-        {% if educations %}
-            <div class="section">
-                <h2>Education</h2>
-                {% for education in educations %}
-                    <div class="entry">
-                        <h3>{{ education.degree }} - {{ education.institute }}</h3>
-                        <p>{{ education.start_date }} - {{ education.end_date|default:"Present" }}</p>
-                        <p>GPA: {{ education.gpa }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        <!-- Skills Section -->
-        {% if skills %}
-            <div class="section">
+            <!-- Skills Section -->
+            <div class="skills" contenteditable="true">
                 <h2>Skills</h2>
                 <ul>
                     {% for skill in skills %}
@@ -134,49 +242,71 @@
                     {% endfor %}
                 </ul>
             </div>
-        {% endif %}
 
-        <!-- Languages Section -->
-        {% if languages %}
-            <div class="section">
-                <h2>Languages</h2>
+            <!-- Achievements Section -->
+            <div class="achievements" contenteditable="true">
+                <h2>Achievements</h2>
                 <ul>
-                    {% for language in languages %}
-                        <li><strong>{{ language.name }}:</strong> {{ language.proficiency }}</li>
+                    {% for achievement in achievements %}
+                        <li><strong>{{ achievement.title }}:</strong> {{ achievement.description }}</li>
                     {% endfor %}
                 </ul>
             </div>
-        {% endif %}
+        </div>
 
-        <!-- Projects Section -->
-        {% if projects %}
-            <div class="section">
-                <h2>Projects</h2>
+        <!-- Right Column -->
+        <div class="right-column">
+
+            <!-- Professional Summary Section -->
+            <div class="entry" contenteditable="true">
+                <h2 class="section-title">Professional Summary</h2>
+                <p>{{ summary }}</p>
+            </div>
+
+            <!-- Work Experience Section -->
+            {% if work_experiences %}
+            <div class="entry" contenteditable="true">
+                <h2 class="section-title">Work Experience</h2>
+                {% for work in work_experiences %}
+                    <h3>{{ work.job_title }} - {{ work.company }}</h3>
+                    <p class="sub-details">{{ work.start_date }} - {{ work.end_date|default:"Present" }}</p>
+                    <p>{{ work.description }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Education Section -->
+            {% if educations %}
+            <div class="entry" contenteditable="true">
+                <h2 class="section-title">Education</h2>
+                {% for education in educations %}
+                    <h3>{{ education.degree }} - {{ education.institute }}</h3>
+                    <p class="sub-details">{{ education.start_date }} - {{ education.end_date|default:"Present" }}</p>
+                    <p>GPA: {{ education.gpa }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Projects Section -->
+            {% if projects %}
+            <div class="entry" contenteditable="true">
+                <h2 class="section-title">Projects</h2>
                 {% for project in projects %}
-                    <div class="entry">
-                        <h3>{{ project.name }}</h3>
-                        <p>{{ project.description }}</p>
-                    </div>
+                    <h3>{{ project.name }}</h3>
+                    <p>{{ project.description }}</p>
                 {% endfor %}
             </div>
-        {% endif %}
-
-        <!-- Achievements Section -->
-        {% if achievements %}
-            <div class="section">
-                <h2>Achievements</h2>
-                {% for achievement in achievements %}
-                    <div class="entry">
-                        <h3>{{ achievement.title }}</h3>
-                        <p>{{ achievement.description }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
 
     </div>
-    <h2>Download Your Resume</h2>
-    <a href="?download=pdf">Download as PDF</a> 
 
-    </body>
-    </html>
+    <!-- Download Section -->
+    <div class="download">
+        <a href="?download=pdf">Download as PDF</a> |
+    </div>
+
+</div>
+
+</body>
+</html>

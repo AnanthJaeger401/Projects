@@ -11,90 +11,123 @@
       padding: 0;
       box-sizing: border-box;
     }
-
+  
     html, body {
       font-family: 'Open Sans', sans-serif;
       line-height: 1.6;
-      background-color: #f4f7fc;
+      background-color: #e6f2ff;
       color: #333;
       padding: 0 15px;
     }
-
+  
     .container {
       max-width: 900px;
       margin: 40px auto;
       background: #fff;
       padding: 30px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      border-top: 4px solid #ff6600;
     }
-
+  
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
-
+  
     .header h1 {
       font-size: 48px;
-      color: #333;
+      color: #ff6600;
       margin-bottom: 10px;
+      font-weight: 700;
     }
-
+  
     .name {
       font-weight: 600;
-      color: #2e6ad6;
+      color: #ff6600;
     }
-
+  
     .contact-info p {
       font-size: 16px;
       color: #777;
     }
-
+  
     .contact-info .separator {
       margin: 0 15px;
       color: #bbb;
     }
-
+  
     .section-title {
       font-size: 22px;
-      color: #2e6ad6;
+      color: #ff6600;
       text-transform: uppercase;
       margin-bottom: 15px;
+      border-bottom: 2px solid #ff6600;
+      padding-bottom: 5px;
     }
-
+  
     .section-content {
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
-
+  
     .entry {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
-
+  
     .position {
       font-size: 18px;
       font-weight: 600;
       color: #333;
+      margin-bottom: 5px;
     }
-
+  
     .date {
+      font-size: 14px;
       color: #777;
     }
-
+  
     .skills-list,
     .languages-list {
       list-style: none;
       padding-left: 0;
     }
-
+  
     .skills-list li,
     .languages-list li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      font-size: 16px;
     }
-
+  
     .skills__item strong {
       color: #333;
     }
+  
+    /* Add some spacing between sections */
+    .section-content {
+      padding-bottom: 30px;
+    }
+  
+    /* Customize link style */
+    a {
+      color: #ff6600;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  
+    a:hover {
+      text-decoration: underline;
+    }
+  
+    /* Add hover effect for entries */
+    .entry:hover {
+      background-color: #fdf1e6;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
   </style>
+  
+  
 </head>
 <body>
   <div class="container">

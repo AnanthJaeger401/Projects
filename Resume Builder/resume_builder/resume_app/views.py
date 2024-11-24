@@ -188,6 +188,13 @@ def create_resume(request):
                 'achievements': response["achievements"],
             }
                 
+                if request.GET.get('download') == 'pdf':
+                    html = render_to_string(f'resume_{resume.resume_template}.html', context)
+                    response = HttpResponse(content_type='application/pdf')
+                    response['Content-Disposition'] = f'attachment; filename="{resume.title}_resume.pdf"'
+                    pisa.CreatePDF(html, dest=response)
+                    return response
+                
                 if selected_template==1:
                     return render(request, 'resume_1.html', val)
                 elif selected_template==2:
@@ -242,9 +249,9 @@ from django.views.decorators.csrf import csrf_exempt
 # View to display template selection page
 def select_template_page(request):
     templates = [
-        {"id": 1, "name": "Template 1", "preview_image": "/static/images/template1_preview.png"},
-        {"id": 2, "name": "Template 2", "preview_image": "/static/images/template2_preview.png"},
-        {"id": 3, "name": "Template 3", "preview_image": "/static/images/template3_preview.png"},
+        {"id": 1, "name": "Template 1", "preview_image": "/static/images/template1.png"},
+        {"id": 2, "name": "Template 2", "preview_image": "/static/images/template2.png"},
+        {"id": 3, "name": "Template 3", "preview_image": "/static/images/template3.png"},
     ]
     return render(request, "choosetemplate.html", {"templates": templates})
 
